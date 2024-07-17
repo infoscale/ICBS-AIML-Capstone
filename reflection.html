@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide Presentation</title>
+  <style>
+    .slide-container {
+      position: relative;
+      width: 60%;
+      height: 60%;
+      left: 20%;
+      transform: translate(-20%, -20%);
+      word-wrap: break-word;
+      background-color: beige;
+    }
+
+    .slide {
+      display: none;
+      /* Hide slides initially; will be shown via JavaScript */
+      position: relative;
+      /* Ensure the slide is positioned relative to its container */
+    }
+
+    .slide.active {
+      display: block;
+      /* Show the active slide */
+    }
+
+    .slide-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      z-index: 10;
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+  </style>
+      <script>
+        let currentSlide = 1;
+        const totalSlides = 2;
+  
+        function showSlide(n) {
+          const slides = document.querySelectorAll('.slide');
+          if (n > totalSlides) { currentSlide = 1 }
+          if (n < 1) { currentSlide = totalSlides }
+          for (let i = 0; i < totalSlides; i++) {
+            slides[i].style.display = "none";
+          }
+          slides[currentSlide - 1].style.display = "block";
+        }
+  
+        function nextSlide() {
+          showSlide(currentSlide += 1);
+        }
+  
+        function previousSlide() {
+          showSlide(currentSlide -= 1);
+        }
+  
+        // Optional: Add event listeners for navigation buttons if you add them
+        document.addEventListener('DOMContentLoaded', function () {
+          showSlide(currentSlide);
+  
+          // Attach event listeners to buttons
+          document.getElementById('prevButton').addEventListener('click', previousSlide);
+          document.getElementById('nextButton').addEventListener('click', nextSlide);
+        });
+      </script>
+</head>
+
+<body <div class="slide-container">
+  <div id="gaussian-process-regressor" class="slide active">
+    <h2>Gaussian Process Regressor</h2>
+    <p></p>
+  </div>
+
+  <div id="botorch-acquisition" class="slide">
+    <h2>BoTorch Acquisition Function</h2>
+  </div>
+
+  <div id="montecarlo-acquisition" class="slide">
+    <h2>Monte Carlo Acquisition Function</h2>
+  </div>
+
+  <button id="prevButton" class="slide-nav prev">«</button>
+  <button id="nextButton" class="slide-nav next">»</button>
+</body>
+
+</html>
