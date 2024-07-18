@@ -1,102 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slide Presentation</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slide Presentation</title>
+<style>
     .slide-container {
-      position: relative;
+     position: relative;
       width: 60%;
-      height: 60%;
+      height: 40%;
       left: 20%;
-      transform: translate(-20%, -20%);
+      margin-top: 10%;
+      transform: translateX(-20%);
       word-wrap: break-word;
-      background-color: beige;
-    }
+   }
+   
+   .slide {
+     display: none;
+     position: relative;
+     background-color: beige;
+     height: 700px;
+     border: 2px solid black;
+     padding: 20px;
+     border-radius: 15px;
+     margin: 0;
+     padding: 0;
+   }
 
-    .slide {
-      display: none;
-      /* Hide slides initially; will be shown via JavaScript */
-      position: relative;
-      /* Ensure the slide is positioned relative to its container */
-    }
+   .slide-header {
+     background-color: #231313;
+     height: 15%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     color: white;
+     border-radius: 13px 13px 0 0;
+   }
 
-    .slide.active {
-      display: block;
-      /* Show the active slide */
-    }
+   .slide-body {
+    padding: 0px;
+  }
 
-    .slide-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      cursor: pointer;
-      padding: 10px;
-      z-index: 10;
-    }
+   .slide.active {
+     display: block;
+   }
+   
+   .slide-nav {
+     position: absolute;
+     top: 50%;
+     transform: translateY(-50%);
+     background-color: rgba(0,0,0,0.5);
+     color: white;
+     border: none;
+     cursor: pointer;
+     padding: 10px;
+     z-index: 10;
+   }
+   
+   .prev {
+     left: 10px;
+   }
+   
+   .next {
+     right: 10px;
+   }
 
-    .prev {
-      left: 10px;
-    }
+   .slide-text {
+    display: block; 
+    padding: 10px; 
+    font-family: 'Courier New', Courier;
+   }
 
-    .next {
-      right: 10px;
-    }
-  </style>
-      <script>
-        let currentSlide = 1;
-        const totalSlides = 2;
+   .python-code {
+     padding: -5px;
+     margin: 20px 0;
+     white-space: pre-wrap;
+     font-family: 'Courier New', Courier, monospace;
+     margin-left: -5px;
+   }
+   </style>
+
+<script>
+  let currentSlide = 1;
+  const totalSlides = 3;
   
-        function showSlide(n) {
-          const slides = document.querySelectorAll('.slide');
-          if (n > totalSlides) { currentSlide = 1 }
-          if (n < 1) { currentSlide = totalSlides }
-          for (let i = 0; i < totalSlides; i++) {
-            slides[i].style.display = "none";
-          }
-          slides[currentSlide - 1].style.display = "block";
-        }
+  function showSlide(n) {
+    const slides = document.querySelectorAll('.slide');
+    if (n > totalSlides) {currentSlide = 1}
+    if (n < 1) {currentSlide = totalSlides}
+    for (let i = 0; i < totalSlides; i++) {
+      slides[i].style.display = "none";
+    }
+    slides[currentSlide-1].style.display = "block";
+  }
   
-        function nextSlide() {
-          showSlide(currentSlide += 1);
-        }
+  function nextSlide() {
+    showSlide(currentSlide += 1);
+  }
   
-        function previousSlide() {
-          showSlide(currentSlide -= 1);
-        }
+  function previousSlide() {
+    showSlide(currentSlide -= 1);
+  }
   
-        // Optional: Add event listeners for navigation buttons if you add them
-        document.addEventListener('DOMContentLoaded', function () {
-          showSlide(currentSlide);
+  // Optional: Add event listeners for navigation buttons if you add them
+  document.addEventListener('DOMContentLoaded', function() {
+      showSlide(currentSlide);
   
-          // Attach event listeners to buttons
-          document.getElementById('prevButton').addEventListener('click', previousSlide);
-          document.getElementById('nextButton').addEventListener('click', nextSlide);
-        });
-      </script>
-</head>
+      // Attach event listeners to buttons
+      document.getElementById('prevButton').addEventListener('click', previousSlide);
+      document.getElementById('nextButton').addEventListener('click', nextSlide);
+  });
+  </script>
+ </head>
+ <body
+   <div class="slide-container">
+     <div id="gaussioan-process-regressor" class="slide active">
+        <div class="slide-header">
+          <h2>Gaussian Process Regressor</h2>
+        </div>
+        <div class="slide-body">
+          <p class="slide-text"> 
+            <span>The GaussianProcessRegressor is a machine learning algorithm for regression for fitting, predicting, and analyzing data.</span></br></br>
+            <span>GP regression is a non-parametric kernel-based probabilistic model particularly useful for small datasets and can provide uncertainty measurements on the predictions.</span>
+          </p>
+          <div style="background-color: #f5f5f5;">
+            <pre>
+              <code class="python-code">
+  ...
+  from sklearn.gaussian_process import GaussianProcessRegressor
+  ...
+  def upper_confidance_bound(i_param, o_param):
+    gpr = GaussianProcessRegressor()
+    gpr.fit(i_param, o_param)
+    mean, std = gpr.predict(X_grid, return_std = True)
+    ucb = mean + 1.96 * std
+    return ucb
+  ...
+  def get_next(upper_conf):
+    idx_max = np.argmax(upper_conf)
+    next_query = X_grid[idx_max]
+    return next_query
+  ...
+              </code>
+            </pre>
+          </div>
+        </div>
+      </div>
+      <div id="botorch-acquisition" class="slide">
+        <div class="slide-header">
+          <h2>BoTorch Acquisition Function</h2>
+        </div>
+        <div class="slide-body">
+          <p class="slide-text">
+            <span>The qExpectedImprovement acquisition function computes the expected improvement over the best value found so far, with the expectation taken over the posterior distribution of the model.</span></br>
+            <span>The improvement is defined as the difference between the best observed value and the posterior mean of the model at the candidate point.</span></br>
+            <span>This method balances exploration (selecting points with high uncertainty) and exploitation (selecting points with high expected improvement) to efficiently search for the optimal solution.</span>
+          </p>
+          <div style="background-color: #f5f5f5;">
+            <pre>
+              <code class="python-code">
+  ...
+  from botorch.acquisition import qExpectedImprovement
+  ...
+  EI = qExpectedImprovement(model=gp_model, best_f=best_Y)
+  ...
+  candidates, _ = optimize_acqf(
+            acq_function=EI,
+            bounds=bounds,
+            q=1,  # Number of points to generate
+            num_restarts=200,
+            raw_samples=512,
+        )
+  ...
+              </code>
+            </pre>
+          </div>
+        </div>
+      </div>
+      <div id="montecarlo-acquisition" class="slide">
+        <div class="slide-header">
+          <h2>MonteCarlo Acquisition Function</h2>
+        </div>
+        <div class="slide-body">
+          <p class="slide-text">
+            <span>Monte Carlo (MC) based acquisition functions can compute acquisition values using Monte Carlo simulations.</span></br>
+            <span>With Monte Carlo acquisitin function, the Expected Improvement is estimated using stochastic sampling.</span></br>
+            <span>This approach is particularly useful where analytical solutions are infeasible.</span></br></br>
+            <span>Monte Carlo methods can be more flexible and can accommodate a wider range of models but at the cost of increased computational overhead due to the need for sampling.</span>
+          </p>
+          <div style="background-color: #f5f5f5;">
+            <pre>
+              <code class="python-code">
+  ...
+  from botorch.acquisition.monte_carlo import qExpectedImprovement
+  ...
+  EI = qExpectedImprovement(model=gp_model, best_f=best_Y)
+  ...
+  candidates, _ = optimize_acqf(
+            acq_function=EI,
+            bounds=bounds,
+            q=1,  # Number of points to generate
+            num_restarts=200,
+            raw_samples=512,
+            options={"batch_limit": 5, "maxiter": 200},
+        )
+  ...
+            </code>
+           </pre>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button id="prevButton" class="slide-nav prev">«</button>
+        <button id="nextButton" class="slide-nav next">»</button>
+      </div>
 
-<body <div class="slide-container">
-  <div id="gaussian-process-regressor" class="slide active">
-    <h2>Gaussian Process Regressor</h2>
-    <p></p>
-  </div>
+    </div>
 
-  <div id="botorch-acquisition" class="slide">
-    <h2>BoTorch Acquisition Function</h2>
-  </div>
-
-  <div id="montecarlo-acquisition" class="slide">
-    <h2>Monte Carlo Acquisition Function</h2>
-  </div>
-
-  <button id="prevButton" class="slide-nav prev">«</button>
-  <button id="nextButton" class="slide-nav next">»</button>
+        
 </body>
-
 </html>
