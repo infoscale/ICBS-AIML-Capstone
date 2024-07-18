@@ -3,7 +3,7 @@ import warnings
 import numpy as np
 from botorch.models import SingleTaskGP
 from botorch import fit_gpytorch_mll
-from botorch.acquisition.monte_carlo import qExpectedImprovement
+from botorch.acquisition import qExpectedImprovement
 from gpytorch.mlls import ExactMarginalLogLikelihood
 from botorch.optim import optimize_acqf
 
@@ -371,8 +371,7 @@ def process(X, Y):
             bounds=bounds,
             q=1,  # Number of points to generate
             num_restarts=200,
-            raw_samples=512,
-            options={"batch_limit": 5, "maxiter": 200},
+            raw_samples=512
         )
 
         print("Candidates:", candidates)
